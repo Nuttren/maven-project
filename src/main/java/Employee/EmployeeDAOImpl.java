@@ -36,7 +36,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public void getEmployeeById(int id) {
             try (final Connection connection = DriverManager.getConnection(url, user, password);
                  PreparedStatement statement =
-                         connection.prepareStatement("SELECT * FROM employee WHERE id=3")) {
+                         connection.prepareStatement("SELECT * FROM employee WHERE id=7")) {
 
                 ResultSet resultSet = statement.executeQuery();
 
@@ -90,7 +90,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public void deleteEmployee(int id) {
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM employee")) {
+                     connection.prepareStatement("DELETE FROM employee WHERE id=7")) {
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -118,7 +118,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public void changeEmployee(Employee employee) {
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement =
-                     connection.prepareStatement("UPDATE employee SET first_name = 'Basya' WHERE id = 5;")) {
+                     connection.prepareStatement("UPDATE employee SET first_name = 'Basya' WHERE id = 7;")) {
 
             ResultSet resultSet = statement.executeQuery();
 
