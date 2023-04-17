@@ -54,13 +54,11 @@ public class Application {
 
         EmployeeDAO employeeDAO = new EmployeeDAOImpl();
         List<Employee> employees = employeeDAO.getAllEmployee();
-        employeeDAO.createEmployee((Employee) employees);
-        employeeDAO.getEmployeeById((int) ((Employee) employees).getId());
-        employeeDAO.changeEmployee((Employee) employees);
-        employeeDAO.deleteEmployee ((int) ((Employee) employees).getId());
+        employeeDAO.createEmployee(new Employee(7, "Petr", "Petrov", "male", 30, 3));
+        employeeDAO.getEmployeeById(7);
+        employeeDAO.changeEmployee(new Employee(7, "Basya", "Petrov", "male", 30, 3));
+        employeeDAO.deleteEmployee (7);
 
-
-        employeeDAO.createEmployee((Employee) employees);
 
         for (Employee employee : employees) {
             System.out.println("ID сотрудника: " + employee.getId());
