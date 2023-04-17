@@ -53,12 +53,14 @@ public class Application {
 //        }
 
         EmployeeDAO employeeDAO = new EmployeeDAOImpl();
-//        employeeDAO.createEmployee(new Employee(9, "Petr", "Petrov", "male", 30, 3));
+        List<Employee> employees = employeeDAO.getAllEmployee();
+        employeeDAO.createEmployee((Employee) employees);
         employeeDAO.getEmployeeById(5);
-        employeeDAO.changeEmployee(new Employee(9, "Petr", "Petrov", "male", 30, 3));
+        employeeDAO.changeEmployee((Employee) employees);
         employeeDAO.deleteEmployee(0);
 
-        List<Employee> employees = employeeDAO.getAllEmployee();
+
+        employeeDAO.createEmployee((Employee) employees);
 
         for (Employee employee : employees) {
             System.out.println("ID сотрудника: " + employee.getId());
@@ -67,8 +69,5 @@ public class Application {
             System.out.println("Пол сотрудника: " + employee.getGender());
             System.out.println("ID города сотрудника: " + employee.getCity_id());
         }
-
-
-
     }
 }

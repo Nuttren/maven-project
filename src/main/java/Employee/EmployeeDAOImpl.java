@@ -90,7 +90,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public void deleteEmployee(int id) {
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement =
-                     connection.prepareStatement("DELETE FROM employee WHERE id = 1")) {
+                     connection.prepareStatement("SELECT * FROM employee")) {
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -103,7 +103,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 int ageOfEmployee = resultSet.getInt("age");
                 int cityIdOfEmployee = resultSet.getInt("city_id");
                 Employee employees2 = new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee);
-                System.out.println(employees2);
+
+
             }
         } catch (SQLException e) {
             System.out.println("Ошибка при подключении к БД!");
