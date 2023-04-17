@@ -55,9 +55,9 @@ public class Application {
         EmployeeDAO employeeDAO = new EmployeeDAOImpl();
         List<Employee> employees = employeeDAO.getAllEmployee();
         employeeDAO.createEmployee((Employee) employees);
-        employeeDAO.getEmployeeById(5);
+        employeeDAO.getEmployeeById((int) ((Employee) employees).getId());
         employeeDAO.changeEmployee((Employee) employees);
-        employeeDAO.deleteEmployee(0);
+        employeeDAO.deleteEmployee ((int) ((Employee) employees).getId());
 
 
         employeeDAO.createEmployee((Employee) employees);
