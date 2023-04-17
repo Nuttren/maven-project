@@ -1,23 +1,16 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.List;
 
 public class Application {
+
     public static void main(String[] args) {
-        final String user = "postgres";
-        final String password = "1";
-        final String url = "jdbc:postgresql://localhost:5432/skypro";
+        BookDAO bookDAO = new BookDAOImpl();
+        List<Book> books = bookDAO.getAllBooks();
 
-        try (final Connection connection =
-                     DriverManager.getConnection(url, user, password)) {
-
-            System.out.println("Соединение установлено!");
-
-        } catch (SQLException e) {
-            System.out.println("Ошибка при подключении к базе данных!");
-            e.printStackTrace();
-            // Исключение для обработки возможных ошибок при подключении
+        for (Book book : books) {
+            System.out.println("Book ID: " + book.getId());
+            System.out.println("Title: " + book.getTitle());
+            System.out.println("Author_id: " + book.getAuthorId());
+            System.out.println("Amount: " + book.getAmount());
         }
     }
 }
-
