@@ -27,12 +27,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 int ageOfEmployee = resultSet.getInt("age");
                 int cityIdOfEmployee = resultSet.getInt("city_id");
 
-                employees.put(employee.getId(), new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee));
+                Employee e3 = new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee);
+                System.out.println(e3);
             }
         } catch (SQLException e) {
             System.out.println("Ошибка при подключении к БД!");
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -74,8 +76,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public void changeEmployee(Employee employee) {
+        try (final Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement =
+                     connection.prepareStatement("SELECT * FROM employee")) {
 
-        employees.put(employee.getId(), employee);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int idOfEmployee = resultSet.getInt("id");
+                String firstNameOfEmployee = resultSet.getString("first_name");
+                String lastNameOfEmployee = resultSet.getString("last_name");
+                String genderNameOfEmployee = resultSet.getString("gender");
+                int ageOfEmployee = resultSet.getInt("age");
+                int cityIdOfEmployee = resultSet.getInt("city_id");
+
+                Employee e = new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee);
+                System.out.println(e);
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при подключении к БД!");
+            e.printStackTrace();
+        }
+
     }
 }
 

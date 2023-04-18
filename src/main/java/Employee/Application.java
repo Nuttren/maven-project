@@ -67,10 +67,9 @@ public class Application {
             System.out.println("ID города сотрудника: " + employee.getCity_id());
         }
 
-        Employee e1 = new Employee(11, "Vasia", "Vasiliev", "male", 10,5);
+
         Employee e2 = new Employee(12, "Kate", "Kate", "female",20,5);
 
-        employeeDAO.createEmployee(e1);
         employeeDAO.createEmployee(e2);
         System.out.println(e2);
 
