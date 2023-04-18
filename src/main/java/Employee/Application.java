@@ -4,6 +4,7 @@ import Book.Book;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Scanner;
 
 public class Application {
     public static void main(String[] args) throws SQLException {
@@ -54,11 +55,10 @@ public class Application {
 
         EmployeeDAO employeeDAO = new EmployeeDAOImpl();
         List<Employee> employees = employeeDAO.getAllEmployee();
-        employeeDAO.createEmployee(new Employee(7, "Petr", "Petrov", "male", 30, 3));
-        employeeDAO.getEmployeeById(7);
-        employeeDAO.changeEmployee(new Employee(7, "Basya", "Petrov", "male", 30, 3));
-        employeeDAO.deleteEmployee (7);
 
+//        employeeDAO.getEmployeeById(7);
+//        employeeDAO.changeEmployee(new Employee(7, "Basya", "Petrov", "male", 30, 3));
+//        employeeDAO.deleteEmployee (7);
 
         for (Employee employee : employees) {
             System.out.println("ID сотрудника: " + employee.getId());
@@ -67,5 +67,8 @@ public class Application {
             System.out.println("Пол сотрудника: " + employee.getGender());
             System.out.println("ID города сотрудника: " + employee.getCity_id());
         }
+        Employee employee = null;
+        employeeDAO.changeEmployee(employee);
+
     }
 }
