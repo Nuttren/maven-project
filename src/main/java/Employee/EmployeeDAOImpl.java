@@ -39,6 +39,27 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public Employee getEmployeeById(int id) {
+        try (final Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement =
+                     connection.prepareStatement("SELECT * FROM employee")) {
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int idOfEmployee = resultSet.getInt("id");
+                String firstNameOfEmployee = resultSet.getString("first_name");
+                String lastNameOfEmployee = resultSet.getString("last_name");
+                String genderNameOfEmployee = resultSet.getString("gender");
+                int ageOfEmployee = resultSet.getInt("age");
+                int cityIdOfEmployee = resultSet.getInt("city_id");
+
+                employees.put(idOfEmployee, new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee));
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при подключении к БД!");
+            e.printStackTrace();
+        }
+
         return employees.get(id);
     }
 

@@ -56,8 +56,7 @@ public class Application {
         EmployeeDAO employeeDAO = new EmployeeDAOImpl();
         List<Employee> employees = employeeDAO.getAllEmployee();
 
-        employeeDAO.getEmployeeById(7);
-
+        System.out.println(employeeDAO.getEmployeeById(5));
 
         for (Employee employee : employees) {
             System.out.println("ID сотрудника: " + employee.getId());
