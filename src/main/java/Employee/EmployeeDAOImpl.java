@@ -8,19 +8,37 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     private final String password = "1";
     private final String url = "jdbc:postgresql://localhost:5432/skypro";
 
-    Scanner scanner = new Scanner(System.in);
     Map<Integer, Employee> employees = new HashMap<>();
+
 
     @Override
     public void createEmployee(Employee employee) {
-        employees.put(employee.getId(), employee);
+        try (final Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement =
+                     connection.prepareStatement("SELECT * FROM employee")) {
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int idOfEmployee = resultSet.getInt("id");
+                String firstNameOfEmployee = resultSet.getString("first_name");
+                String lastNameOfEmployee = resultSet.getString("last_name");
+                String genderNameOfEmployee = resultSet.getString("gender");
+                int ageOfEmployee = resultSet.getInt("age");
+                int cityIdOfEmployee = resultSet.getInt("city_id");
+
+                employees.put(employee.getId(), new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee));
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при подключении к БД!");
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Employee getEmployeeById(int id) {
         return employees.get(id);
     }
-
 
 
     @Override
@@ -56,8 +74,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public void changeEmployee(Employee employee) {
+
         employees.put(employee.getId(), employee);
     }
-
-
 }
+
+
+
+

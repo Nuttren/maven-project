@@ -68,15 +68,18 @@ public class Application {
         }
 
         Employee e1 = new Employee(11, "Vasia", "Vasiliev", "male", 10,5);
-        Employee e2 = new Employee(12, "Kate", "Kate", "femail",20,5);
+        Employee e2 = new Employee(12, "Kate", "Kate", "female",20,5);
 
         employeeDAO.createEmployee(e1);
         employeeDAO.createEmployee(e2);
+        System.out.println(e2);
 
         e2.setAge(30);
         employeeDAO.changeEmployee(e2);
+        System.out.println(e2);
 
-        employeeDAO.deleteEmployee(1);
+        employeeDAO.deleteEmployee(3);
+
 
     }
 }
