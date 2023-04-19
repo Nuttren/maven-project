@@ -12,7 +12,9 @@ public interface EmployeeDAO {
 
     List<Employee> getAllEmployee() throws SQLException;
 
-    void changeEmployee(Employee employee);
+    List<Employee> changeEmployee(int id, Employee employee);
 
     void deleteEmployee(int id);
+
 }
+

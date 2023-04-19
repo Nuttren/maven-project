@@ -11,8 +11,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     Map<Integer, Employee> employees = new HashMap<>();
 
 
+
+
+
+
     @Override
     public void createEmployee(Employee employee) {
+
+
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement =
                      connection.prepareStatement("SELECT * FROM employee")) {
@@ -27,8 +33,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 int ageOfEmployee = resultSet.getInt("age");
                 int cityIdOfEmployee = resultSet.getInt("city_id");
 
-                Employee e3 = new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee);
-                System.out.println(e3);
+
+
+                Employee e = new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee);
+                System.out.println(e);
             }
         } catch (SQLException e) {
             System.out.println("Ошибка при подключении к БД!");
@@ -39,6 +47,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public Employee getEmployeeById(int id) {
+        List<Employee> employees = new ArrayList<>();
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement =
                      connection.prepareStatement("SELECT * FROM employee")) {
@@ -53,14 +62,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 int ageOfEmployee = resultSet.getInt("age");
                 int cityIdOfEmployee = resultSet.getInt("city_id");
 
-                employees.put(idOfEmployee, new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee));
+                for (Employee employee : employees) {
+                    if (employee.getId() == id) {
+                        return employee;
+                    }
+                }
             }
         } catch (SQLException e) {
             System.out.println("Ошибка при подключении к БД!");
             e.printStackTrace();
         }
 
-        return employees.get(id);
+        return null;
     }
 
 
@@ -95,32 +108,51 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         employees.remove(id);
     }
 
+private static final String CHANGE_EMPLOYEE = "UPDATE employee SET id =?, first_name = ?, last_name = ?, gender = ?, age = ?, city_id =? WHERE id =?";
     @Override
-    public void changeEmployee(Employee employee) {
+    public List<Employee> changeEmployee(int id, Employee employee) {
+        List<Employee> changeEmployee = new ArrayList<>();
         try (final Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM employee")) {
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(CHANGE_EMPLOYEE)) {
+            preparedStatement.setInt(1,id);
+            preparedStatement.setString(2,employee.getFirst_name());
+            preparedStatement.setString(3,employee.getLast_name());
+            preparedStatement.setString(4,employee.getGender());
+            preparedStatement.setInt(5,employee.getAge());
+            preparedStatement.setInt(6,employee.getCity_id());
+            preparedStatement.setInt(7,id);
 
-            ResultSet resultSet = statement.executeQuery();
+            preparedStatement.executeUpdate();
 
-            while (resultSet.next()) {
-                int idOfEmployee = resultSet.getInt("id");
-                String firstNameOfEmployee = resultSet.getString("first_name");
-                String lastNameOfEmployee = resultSet.getString("last_name");
-                String genderNameOfEmployee = resultSet.getString("gender");
-                int ageOfEmployee = resultSet.getInt("age");
-                int cityIdOfEmployee = resultSet.getInt("city_id");
+            PreparedStatement statement =
+                    connection.prepareStatement("SELECT * FROM employee");{
 
-                Employee e = new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee);
-                System.out.println(e);
+                ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    int idOfEmployee = resultSet.getInt("id");
+                    String firstNameOfEmployee = resultSet.getString("first_name");
+                    String lastNameOfEmployee = resultSet.getString("last_name");
+                    String genderNameOfEmployee = resultSet.getString("gender");
+                    int ageOfEmployee = resultSet.getInt("age");
+                    int cityIdOfEmployee = resultSet.getInt("city_id");
+
+                    changeEmployee.add(new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee));
+                }
             }
         } catch (SQLException e) {
             System.out.println("Ошибка при подключении к БД!");
             e.printStackTrace();
         }
 
+        return changeEmployee;
     }
-}
+
+    }
+
+
+
 
 
 

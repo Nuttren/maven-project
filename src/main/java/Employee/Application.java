@@ -72,11 +72,9 @@ public class Application {
         employeeDAO.createEmployee(e2);
         System.out.println(e2);
 
-        e2.setAge(30);
-        employeeDAO.changeEmployee(e2);
-        System.out.println(e2);
+       System.out.println(employeeDAO.changeEmployee(3,new Employee(3, "KKKKate", "Kate", "female",20,2)));
 
-        employeeDAO.deleteEmployee(3);
+ //       employeeDAO.deleteEmployee(3);
 
 
     }
