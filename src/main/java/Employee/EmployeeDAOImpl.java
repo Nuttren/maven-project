@@ -1,20 +1,26 @@
 package Employee;
 
+import javax.persistence.*;
 import java.sql.*;
 import java.util.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
     private final String user = "postgres";
     private final String password = "1";
     private final String url = "jdbc:postgresql://localhost:5432/skypro";
 
-    Map<Integer, Employee> employees = new HashMap<>();
+
+    private EntityManager entityManager;
+    private EntityManagerFactory emf;
 
 
-
-
-
-
+    public EmployeeDAOImpl () {
+        this.emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        this.entityManager = this.emf.createEntityManager();
+    }
     @Override
     public void createEmployee(Employee employee) {
 
@@ -34,7 +40,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 int cityIdOfEmployee = resultSet.getInt("city_id");
 
 
-
                 Employee e = new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee);
                 System.out.println(e);
             }
@@ -47,33 +52,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public Employee getEmployeeById(int id) {
-        List<Employee> employees = new ArrayList<>();
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM employee")) {
-
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                int idOfEmployee = resultSet.getInt("id");
-                String firstNameOfEmployee = resultSet.getString("first_name");
-                String lastNameOfEmployee = resultSet.getString("last_name");
-                String genderNameOfEmployee = resultSet.getString("gender");
-                int ageOfEmployee = resultSet.getInt("age");
-                int cityIdOfEmployee = resultSet.getInt("city_id");
-
-                for (Employee employee : employees) {
-                    if (employee.getId() == id) {
-                        return employee;
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Ошибка при подключении к БД!");
-            e.printStackTrace();
-        }
-
-        return null;
+       Query query = entityManager.createNamedQuery("find by Id");
+       query.setParameter("id", id);
+       return (Employee) query.getSingleResult();
     }
 
 
@@ -103,30 +84,61 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return employees;
     }
 
+    private static final String DELETE_EMPLOYEE = "DELETE FROM employee WHERE id =?";
+
     @Override
-    public void deleteEmployee(int id) {
-        employees.remove(id);
+    public List<Employee> deleteEmployee(int id, Employee employee) throws SQLException {
+        List<Employee> deleteEmployee = new ArrayList<>();
+        try (final Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_EMPLOYEE)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            PreparedStatement statement =
+                    connection.prepareStatement("SELECT * FROM employee");
+            {
+                ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    int idOfEmployee = resultSet.getInt("id");
+                    String firstNameOfEmployee = resultSet.getString("first_name");
+                    String lastNameOfEmployee = resultSet.getString("last_name");
+                    String genderNameOfEmployee = resultSet.getString("gender");
+                    int ageOfEmployee = resultSet.getInt("age");
+                    int cityIdOfEmployee = resultSet.getInt("city_id");
+
+                    deleteEmployee.add(new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка при подключении к БД!");
+            e.printStackTrace();
+        }
+
+        return deleteEmployee;
     }
 
-private static final String CHANGE_EMPLOYEE = "UPDATE employee SET id =?, first_name = ?, last_name = ?, gender = ?, age = ?, city_id =? WHERE id =?";
+    private static final String CHANGE_EMPLOYEE = "UPDATE employee SET id =?, first_name = ?, last_name = ?, gender = ?, age = ?, city_id =? WHERE id =?";
+
     @Override
     public List<Employee> changeEmployee(int id, Employee employee) {
         List<Employee> changeEmployee = new ArrayList<>();
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement preparedStatement =
                      connection.prepareStatement(CHANGE_EMPLOYEE)) {
-            preparedStatement.setInt(1,id);
-            preparedStatement.setString(2,employee.getFirst_name());
-            preparedStatement.setString(3,employee.getLast_name());
-            preparedStatement.setString(4,employee.getGender());
-            preparedStatement.setInt(5,employee.getAge());
-            preparedStatement.setInt(6,employee.getCity_id());
-            preparedStatement.setInt(7,id);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, employee.getFirst_name());
+            preparedStatement.setString(3, employee.getLast_name());
+            preparedStatement.setString(4, employee.getGender());
+            preparedStatement.setInt(5, employee.getAge());
+            preparedStatement.setInt(6, employee.getCity_id());
+            preparedStatement.setInt(7, id);
 
             preparedStatement.executeUpdate();
 
             PreparedStatement statement =
-                    connection.prepareStatement("SELECT * FROM employee");{
+                    connection.prepareStatement("SELECT * FROM employee");
+            {
 
                 ResultSet resultSet = statement.executeQuery();
 
@@ -148,8 +160,9 @@ private static final String CHANGE_EMPLOYEE = "UPDATE employee SET id =?, first_
 
         return changeEmployee;
     }
+}
 
-    }
+
 
 
 

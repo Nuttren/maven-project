@@ -1,11 +1,24 @@
 package Employee;
 
+import javax.persistence.*;
+
+@Entity
+@Table (name = "employee")
+@NamedQuery(name = "find by Id", query = "Select s from Employee  s where s.id= :id")
 public class Employee {
+    @Id
+    @Column (name = "id")
     private int id;
+
+    @Column (name = "first_name")
     private String first_name;
+    @Column (name = "last_name")
     private String last_name;
+    @Column (name = "gender")
     private String gender;
+    @Column (name = "age")
     private int age;
+    @Column (name = "city_id")
     private int city_id;
 
     public Employee(int id, String first_name, String last_name, String gender, int age, int city_id) {
@@ -15,6 +28,10 @@ public class Employee {
         this.gender = gender;
         this.age = age;
         this.city_id = city_id;
+    }
+
+    public Employee() {
+
     }
 
     public int getId() {

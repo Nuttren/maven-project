@@ -14,7 +14,7 @@ public interface EmployeeDAO {
 
     List<Employee> changeEmployee(int id, Employee employee);
 
-    void deleteEmployee(int id);
+    List<Employee> deleteEmployee(int id, Employee employee) throws SQLException;
 
 }
 
