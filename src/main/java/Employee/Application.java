@@ -2,6 +2,10 @@ package Employee;
 
 import Book.Book;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import java.sql.*;
 import java.util.List;
 
@@ -79,7 +83,8 @@ public class Application {
         employee = employeeDAO.getEmployeeById(employee.getId());
         System.out.println("Found employee" + employee.toString());
 
-
+        employeeDAO.updateEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
+        employeeDAO.deleteEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
 
     }
 }

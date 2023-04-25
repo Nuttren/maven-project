@@ -17,10 +17,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     private EntityManagerFactory emf;
 
 
-    public EmployeeDAOImpl () {
-        this.emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
-        this.entityManager = this.emf.createEntityManager();
-    }
+//    public EmployeeDAOImpl () {
+//        this.emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
+//        this.entityManager = this.emf.createEntityManager();
+//    }
     @Override
     public void createEmployee(Employee employee) {
 
@@ -87,36 +87,25 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     private static final String DELETE_EMPLOYEE = "DELETE FROM employee WHERE id =?";
 
     @Override
-    public List<Employee> deleteEmployee(int id, Employee employee) throws SQLException {
-        List<Employee> deleteEmployee = new ArrayList<>();
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement preparedStatement =
-                     connection.prepareStatement(DELETE_EMPLOYEE)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-            PreparedStatement statement =
-                    connection.prepareStatement("SELECT * FROM employee");
-            {
-                ResultSet resultSet = statement.executeQuery();
-
-                while (resultSet.next()) {
-                    int idOfEmployee = resultSet.getInt("id");
-                    String firstNameOfEmployee = resultSet.getString("first_name");
-                    String lastNameOfEmployee = resultSet.getString("last_name");
-                    String genderNameOfEmployee = resultSet.getString("gender");
-                    int ageOfEmployee = resultSet.getInt("age");
-                    int cityIdOfEmployee = resultSet.getInt("city_id");
-
-                    deleteEmployee.add(new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Ошибка при подключении к БД!");
-            e.printStackTrace();
-        }
-
-        return deleteEmployee;
+    public void deleteEmployee(Employee employee) {
+        entityManager.getTransaction().begin();
+        entityManager.remove(employee);
+        entityManager.getTransaction().commit();
     }
+
+    @Override
+    public Employee updateEmployee(Employee employee) {
+        Employee employeeToUpdate = getEmployeeById(employee.getId());
+        entityManager.getTransaction().begin();
+        employeeToUpdate.setFirst_name(employee.getFirst_name());
+        employeeToUpdate.setLast_name(employee.getLast_name());
+        employeeToUpdate.setGender(employeeToUpdate.getGender());
+        employeeToUpdate.setAge(employeeToUpdate.getAge());
+        employeeToUpdate.setCity_id(employeeToUpdate.getCity_id());
+        entityManager.getTransaction().commit();
+        return employeeToUpdate;
+    }
+
 
     private static final String CHANGE_EMPLOYEE = "UPDATE employee SET id =?, first_name = ?, last_name = ?, gender = ?, age = ?, city_id =? WHERE id =?";
 

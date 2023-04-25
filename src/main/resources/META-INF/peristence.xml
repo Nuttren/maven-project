@@ -5,6 +5,7 @@
              version="2.1">
     <persistence-unit name="myPersistenceUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
         <properties>
             <property name="javax.persistence.jdbc.url"
                       value="jdbc:postgresql://localhost:5432/skypro"/>
