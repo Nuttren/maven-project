@@ -79,10 +79,7 @@ public class Application {
 
         System.out.println(employeeDAO.changeEmployee(3, new Employee(3, "KKKKate", "Kate", "female", 20, 2)));
 
-        Employee employee = new Employee();
-        employee = employeeDAO.getEmployeeById(employee.getId());
-        System.out.println("Found employee" + employee.toString());
-
+        System.out.println(employeeDAO.getEmployeeById(5));
         employeeDAO.updateEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
         employeeDAO.deleteEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
 

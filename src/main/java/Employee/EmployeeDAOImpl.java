@@ -17,10 +17,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     private EntityManagerFactory emf;
 
 
-//    public EmployeeDAOImpl () {
-//        this.emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
-//        this.entityManager = this.emf.createEntityManager();
-//    }
+    public EmployeeDAOImpl () {
+        this.emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        this.entityManager = this.emf.createEntityManager();
+    }
     @Override
     public void createEmployee(Employee employee) {
 
@@ -52,9 +52,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public Employee getEmployeeById(int id) {
-       Query query = entityManager.createNamedQuery("find by Id");
-       query.setParameter("id", id);
-       return (Employee) query.getSingleResult();
+//       Query query = entityManager.createNamedQuery("find by Id");
+//       query.setParameter("id", id);
+//       return (Employee) query.getSingleResult();
+        return entityManager.find(Employee.class, id);
     }
 
 
