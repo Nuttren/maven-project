@@ -48,4 +48,12 @@ public class City {
         result = 31 * result + (cityName != null ? cityName.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "cityId=" + cityId +
+                ", cityName='" + cityName + '\'' +
+                '}';
+    }
 }
