@@ -7,7 +7,7 @@ public interface EmployeeDAO {
 
     void createEmployee(Employee employee);
 
-    Employee getEmployeeById(int id);
+    Employee getEmployeeById(long id);
 
 
     List<Employee> getAllEmployee() throws SQLException;

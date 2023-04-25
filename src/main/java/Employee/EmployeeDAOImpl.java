@@ -13,13 +13,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     private final String url = "jdbc:postgresql://localhost:5432/skypro";
 
 
-    private EntityManager entityManager;
-    private EntityManagerFactory emf;
+    private final EntityManager entityManager;
 
 
     public EmployeeDAOImpl () {
-        this.emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
-        this.entityManager = this.emf.createEntityManager();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        this.entityManager = emf.createEntityManager();
     }
     @Override
     public void createEmployee(Employee employee) {
@@ -51,7 +50,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public Employee getEmployeeById(int id) {
+    public Employee getEmployeeById(long id) {
 //       Query query = entityManager.createNamedQuery("find by Id");
 //       query.setParameter("id", id);
 //       return (Employee) query.getSingleResult();
@@ -98,11 +97,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public Employee updateEmployee(Employee employee) {
         Employee employeeToUpdate = getEmployeeById(employee.getId());
         entityManager.getTransaction().begin();
-        employeeToUpdate.setFirst_name(employee.getFirst_name());
-        employeeToUpdate.setLast_name(employee.getLast_name());
+        employeeToUpdate.setFirstName(employee.getFirstName());
+        employeeToUpdate.setLastName(employee.getLastName());
         employeeToUpdate.setGender(employeeToUpdate.getGender());
         employeeToUpdate.setAge(employeeToUpdate.getAge());
-        employeeToUpdate.setCity_id(employeeToUpdate.getCity_id());
+        employeeToUpdate.setCityId(employeeToUpdate.getCityId());
         entityManager.getTransaction().commit();
         return employeeToUpdate;
     }
@@ -117,11 +116,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
              PreparedStatement preparedStatement =
                      connection.prepareStatement(CHANGE_EMPLOYEE)) {
             preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, employee.getFirst_name());
-            preparedStatement.setString(3, employee.getLast_name());
+            preparedStatement.setString(2, employee.getFirstName());
+            preparedStatement.setString(3, employee.getLastName());
             preparedStatement.setString(4, employee.getGender());
             preparedStatement.setInt(5, employee.getAge());
-            preparedStatement.setInt(6, employee.getCity_id());
+            preparedStatement.setInt(6, employee.getCityId());
             preparedStatement.setInt(7, id);
 
             preparedStatement.executeUpdate();

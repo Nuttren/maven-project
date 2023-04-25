@@ -1,63 +1,65 @@
 package Employee;
 
-
-
 import javax.persistence.*;
 
 @Entity
-@Table (name = "employee")
-//@NamedQuery(name = "find by Id", query = "Select s from Employee  s where s.id= :id")
+@Table(name = "employee", schema = "public", catalog = "skypro")
 public class Employee {
-    @Id
-    @Column (name = "id")
-    private int id;
-
-    @Column (name = "first_name")
-    private String first_name;
-    @Column (name = "last_name")
-    private String last_name;
-    @Column (name = "gender")
-    private String gender;
-    @Column (name = "age")
-    private int age;
-    @Column (name = "city_id")
-    private int city_id;
-
-    public Employee(int id, String first_name, String last_name, String gender, int age, int city_id) {
+    public Employee(long id, String firstName, String lastName, String gender, Integer age, Integer cityId) {
         this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.city_id = city_id;
+        this.cityId = cityId;
     }
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id")
+    private long id;
+    @Basic
+    @Column(name = "first_name")
+    private String firstName;
+    @Basic
+    @Column(name = "last_name")
+    private String lastName;
+    @Basic
+    @Column(name = "gender")
+    private String gender;
+    @Basic
+    @Column(name = "age")
+    private Integer age;
+    @Basic
+    @Column(name = "city_id")
+    private Integer cityId;
 
     public Employee() {
 
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getGender() {
@@ -68,31 +70,47 @@ public class Employee {
         this.gender = gender;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public int getCity_id() {
-        return city_id;
+    public Integer getCityId() {
+        return cityId;
     }
 
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
     }
 
     @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age=" + age +
-                ", city_id=" + city_id +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Employee that = (Employee) o;
+
+        if (id != that.id) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
+        if (age != null ? !age.equals(that.age) : that.age != null) return false;
+        if (cityId != null ? !cityId.equals(that.cityId) : that.cityId != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (age != null ? age.hashCode() : 0);
+        result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
+        return result;
     }
 }

@@ -65,10 +65,10 @@ public class Application {
 
         for (Employee employee : employees) {
             System.out.println("ID сотрудника: " + employee.getId());
-            System.out.println("Имя сотрудника: " + employee.getFirst_name());
-            System.out.println("Фамилия сотрудника: " + employee.getLast_name());
+            System.out.println("Имя сотрудника: " + employee.getFirstName());
+            System.out.println("Фамилия сотрудника: " + employee.getLastName());
             System.out.println("Пол сотрудника: " + employee.getGender());
-            System.out.println("ID города сотрудника: " + employee.getCity_id());
+            System.out.println("ID города сотрудника: " + employee.getCityId());
         }
 
 

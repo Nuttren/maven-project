@@ -1,37 +1,51 @@
 package Employee;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "city")
-
+@Table(name = "city", schema = "public", catalog = "skypro")
 public class City {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column (name = "city_id")
-    private int city_id;
-    @Column (name = "city_name")
-    private String city_name;
+    @Column(name = "city_id")
+    private int cityId;
+    @Basic
+    @Column(name = "city_name")
+    private String cityName;
 
-    public City() {
-
+    public int getCityId() {
+        return cityId;
     }
 
-    public int getCity_id() {
-        return city_id;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
+    public String getCityName() {
+        return cityName;
     }
 
-    public String getCity_name() {
-        return city_name;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
-    public void setCity_name(String city_name) {
-        this.city_name = city_name;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        City that = (City) o;
+
+        if (cityId != that.cityId) return false;
+        if (cityName != null ? !cityName.equals(that.cityName) : that.cityName != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cityId;
+        result = 31 * result + (cityName != null ? cityName.hashCode() : 0);
+        return result;
     }
 }
