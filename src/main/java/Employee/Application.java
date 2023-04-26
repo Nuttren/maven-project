@@ -90,9 +90,10 @@ public class Application {
 //
 //            System.out.println(employeeDAO.changeEmployee(3, new Employee(3, "KKKKate", "Kate", "female", 20, 2)));
 
-            System.out.println(employeeDAO.getEmployeeById(5));
-//            employeeDAO.updateEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
-//            employeeDAO.deleteEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
+            System.out.println(employeeDAO.getEmployeeById(6));
+            employeeDAO.createEmployee(new Employee(16, "Kate", "Kate", "female", 20, 2));
+            employeeDAO.updateEmployee(new Employee(17, "Egor", "KKKalmykov", "male", 20, 2));
+            employeeDAO.deleteEmployee(new Employee(16, "Kate", "Kate", "female", 20, 2));
 
     }
 }

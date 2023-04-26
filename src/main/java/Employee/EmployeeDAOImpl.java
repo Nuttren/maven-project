@@ -1,13 +1,10 @@
 package Employee;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import javax.persistence.*;
 import java.sql.*;
 import java.util.*;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.swing.*;
 
 
@@ -16,59 +13,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     private final String password = "1";
     private final String url = "jdbc:postgresql://localhost:5432/skypro";
 
-
-//    private final EntityManager entityManager;
-//
-//
-//    public EmployeeDAOImpl () {
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
-//        this.entityManager = emf.createEntityManager();
-//    }
     @Override
     public void createEmployee(Employee employee) {
-
-
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM employee")) {
-
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                int idOfEmployee = resultSet.getInt("id");
-                String firstNameOfEmployee = resultSet.getString("first_name");
-                String lastNameOfEmployee = resultSet.getString("last_name");
-                String genderNameOfEmployee = resultSet.getString("gender");
-                int ageOfEmployee = resultSet.getInt("age");
-                int cityIdOfEmployee = resultSet.getInt("city_id");
-
-
-                Employee e = new Employee(idOfEmployee, firstNameOfEmployee, lastNameOfEmployee, genderNameOfEmployee, ageOfEmployee, cityIdOfEmployee);
-                System.out.println(e);
-            }
-        } catch (SQLException e) {
-            System.out.println("Ошибка при подключении к БД!");
-            e.printStackTrace();
-        }
-
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.save(employee);
+        tx1.commit();
+        session.close();
     }
 
     @Override
     public Employee getEmployeeById(long id) {
-
-        Session session = null;
-        Employee employee = null;
-        try {
-            session = SessionFactoryUtil.getSessionFactory().openSession();
-            employee = (Employee) session.load(Employee.class, id);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return employee;
+        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Employee.class, id);
     }
 
 
@@ -102,24 +58,23 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public void deleteEmployee(Employee employee) {
-//        entityManager.getTransaction().begin();
-//        entityManager.remove(employee);
-//        entityManager.getTransaction().commit();
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.delete(employee);
+        tx1.commit();
+        session.close();
     }
 
     @Override
     public Employee updateEmployee(Employee employee) {
-//        Employee employeeToUpdate = getEmployeeById(employee.getId());
-//        entityManager.getTransaction().begin();
-//        employeeToUpdate.setFirstName(employee.getFirstName());
-//        employeeToUpdate.setLastName(employee.getLastName());
-//        employeeToUpdate.setGender(employeeToUpdate.getGender());
-//        employeeToUpdate.setAge(employeeToUpdate.getAge());
-//        employeeToUpdate.setCityId(employeeToUpdate.getCityId());
-//        entityManager.getTransaction().commit();
-//        return employeeToUpdate;
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.update(employee);
+        tx1.commit();
+        session.close();
         return employee;
     }
+
 
 
     private static final String CHANGE_EMPLOYEE = "UPDATE employee SET id =?, first_name = ?, last_name = ?, gender = ?, age = ?, city_id =? WHERE id =?";

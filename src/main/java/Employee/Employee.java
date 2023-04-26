@@ -1,9 +1,14 @@
 package Employee;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.*;
+
 
 @Entity
-@Table(name = "employee", schema = "public", catalog = "skypro")
+@Table(name = "employee")
 public class Employee {
 
 
@@ -114,5 +119,17 @@ public class Employee {
         result = 31 * result + (age != null ? age.hashCode() : 0);
         result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", cityId=" + cityId +
+                '}';
     }
 }
