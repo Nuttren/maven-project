@@ -5,17 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "employee", schema = "public", catalog = "skypro")
 public class Employee {
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age=" + age +
-                ", cityId=" + cityId +
-                '}';
-    }
+
 
     public Employee(long id, String firstName, String lastName, String gender, Integer age, Integer cityId) {
         this.id = id;

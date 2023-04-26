@@ -1,18 +1,28 @@
 package Employee;
 
 import Book.Book;
+import org.hibernate.HibernateException;
+import org.hibernate.Metamodel;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import javax.persistence.metamodel.EntityType;
 import java.sql.*;
 import java.util.List;
 
 
 
 public class Application {
+
+
     public static void main(String[] args) throws SQLException {
+
 //
 //        // Задаем параметры для подключения к базе данных:
 //        // имя пользователя, пароль и URL
@@ -58,31 +68,35 @@ public class Application {
 //            e.printStackTrace();
 //        }
 
-        EmployeeDAO employeeDAO = new EmployeeDAOImpl();
+            EmployeeDAO employeeDAO = new EmployeeDAOImpl();
 
-        List<Employee> employees = employeeDAO.getAllEmployee();
+//            List<Employee> employees = employeeDAO.getAllEmployee();
+//
+//            System.out.println(employeeDAO.getEmployeeById(5));
+//
+//            for (Employee employee : employees) {
+//                System.out.println("ID сотрудника: " + employee.getId());
+//                System.out.println("Имя сотрудника: " + employee.getFirstName());
+//                System.out.println("Фамилия сотрудника: " + employee.getLastName());
+//                System.out.println("Пол сотрудника: " + employee.getGender());
+//                System.out.println("ID города сотрудника: " + employee.getCityId());
+//            }
+//
+//
+//            Employee e2 = new Employee(12, "Kate", "Kate", "female", 20, 5);
+//
+//            employeeDAO.createEmployee(e2);
+//            System.out.println(e2);
+//
+//            System.out.println(employeeDAO.changeEmployee(3, new Employee(3, "KKKKate", "Kate", "female", 20, 2)));
 
-        System.out.println(employeeDAO.getEmployeeById(5));
-
-        for (Employee employee : employees) {
-            System.out.println("ID сотрудника: " + employee.getId());
-            System.out.println("Имя сотрудника: " + employee.getFirstName());
-            System.out.println("Фамилия сотрудника: " + employee.getLastName());
-            System.out.println("Пол сотрудника: " + employee.getGender());
-            System.out.println("ID города сотрудника: " + employee.getCityId());
-        }
-
-
-        Employee e2 = new Employee(12, "Kate", "Kate", "female", 20, 5);
-
-        employeeDAO.createEmployee(e2);
-        System.out.println(e2);
-
-        System.out.println(employeeDAO.changeEmployee(3, new Employee(3, "KKKKate", "Kate", "female", 20, 2)));
-
-        System.out.println(employeeDAO.getEmployeeById(5));
-        employeeDAO.updateEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
-        employeeDAO.deleteEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
+            System.out.println(employeeDAO.getEmployeeById(5));
+//            employeeDAO.updateEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
+//            employeeDAO.deleteEmployee(new Employee(3, "Kate", "Kate", "female", 20, 2));
 
     }
 }
+
+
+
+

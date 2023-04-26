@@ -1,11 +1,15 @@
 package Employee;
 
+import org.hibernate.Session;
+
 import javax.persistence.*;
 import java.sql.*;
 import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.*;
+
 
 public class EmployeeDAOImpl implements EmployeeDAO {
     private final String user = "postgres";
@@ -13,13 +17,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     private final String url = "jdbc:postgresql://localhost:5432/skypro";
 
 
-    private final EntityManager entityManager;
-
-
-    public EmployeeDAOImpl () {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
-        this.entityManager = emf.createEntityManager();
-    }
+//    private final EntityManager entityManager;
+//
+//
+//    public EmployeeDAOImpl () {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
+//        this.entityManager = emf.createEntityManager();
+//    }
     @Override
     public void createEmployee(Employee employee) {
 
@@ -51,10 +55,20 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public Employee getEmployeeById(long id) {
-//       Query query = entityManager.createNamedQuery("find by Id");
-//       query.setParameter("id", id);
-//       return (Employee) query.getSingleResult();
-        return entityManager.find(Employee.class, id);
+
+        Session session = null;
+        Employee employee = null;
+        try {
+            session = SessionFactoryUtil.getSessionFactory().openSession();
+            employee = (Employee) session.load(Employee.class, id);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return employee;
     }
 
 
@@ -88,22 +102,23 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public void deleteEmployee(Employee employee) {
-        entityManager.getTransaction().begin();
-        entityManager.remove(employee);
-        entityManager.getTransaction().commit();
+//        entityManager.getTransaction().begin();
+//        entityManager.remove(employee);
+//        entityManager.getTransaction().commit();
     }
 
     @Override
     public Employee updateEmployee(Employee employee) {
-        Employee employeeToUpdate = getEmployeeById(employee.getId());
-        entityManager.getTransaction().begin();
-        employeeToUpdate.setFirstName(employee.getFirstName());
-        employeeToUpdate.setLastName(employee.getLastName());
-        employeeToUpdate.setGender(employeeToUpdate.getGender());
-        employeeToUpdate.setAge(employeeToUpdate.getAge());
-        employeeToUpdate.setCityId(employeeToUpdate.getCityId());
-        entityManager.getTransaction().commit();
-        return employeeToUpdate;
+//        Employee employeeToUpdate = getEmployeeById(employee.getId());
+//        entityManager.getTransaction().begin();
+//        employeeToUpdate.setFirstName(employee.getFirstName());
+//        employeeToUpdate.setLastName(employee.getLastName());
+//        employeeToUpdate.setGender(employeeToUpdate.getGender());
+//        employeeToUpdate.setAge(employeeToUpdate.getAge());
+//        employeeToUpdate.setCityId(employeeToUpdate.getCityId());
+//        entityManager.getTransaction().commit();
+//        return employeeToUpdate;
+        return employee;
     }
 
 
