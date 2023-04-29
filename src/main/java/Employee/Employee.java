@@ -21,7 +21,7 @@ public class Employee {
         this.cityId = cityId;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private long id;
@@ -38,12 +38,25 @@ public class Employee {
     @Column(name = "age")
     private Integer age;
     @Basic
-    @Column(name = "city_id")
+    @Column(name = "city_id", insertable=false, updatable=false)
     private Integer cityId;
+
+    @ManyToOne
+    @JoinColumn (name = "city_id", insertable=false, updatable=false)
+    private City city;
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
 
     public Employee() {
 
     }
+
 
     public long getId() {
         return id;

@@ -1,19 +1,43 @@
 package Employee;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "city", schema = "public", catalog = "skypro")
 public class City {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "city_id")
-    private int cityId;
+    private long cityId;
+
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Employee> employees;
+
     @Basic
     @Column(name = "city_name")
     private String cityName;
 
-    public int getCityId() {
+    public City(long cityId, String cityName) {
+        this.cityId = cityId;
+        this.cityName = cityName;
+    }
+
+    public City () {
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+
+
+    public long getCityId() {
         return cityId;
     }
 
@@ -42,12 +66,6 @@ public class City {
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = cityId;
-        result = 31 * result + (cityName != null ? cityName.hashCode() : 0);
-        return result;
-    }
 
     @Override
     public String toString() {
