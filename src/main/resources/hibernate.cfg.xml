@@ -10,8 +10,10 @@
         <property name="connection.password">1</property>
         <property name="hibernate.dialect"> org.hibernate.dialect.PostgresPlusDialect</property>
         <property name="show_sql">true</property>
+        <mapping class="Users.Users"/>
         <mapping class="Employee.City"/>
         <mapping class="Employee.Employee"/>
+
 
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->

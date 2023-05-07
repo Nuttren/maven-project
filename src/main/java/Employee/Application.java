@@ -99,7 +99,7 @@ public class Application {
 //            employeeDAO.deleteEmployee(new Employee(16, "Kate", "Kate", "female", 20, 2));
 //            cityDAO.deleteCity(new City(3,"London"));
 //        System.out.println(cityDAO.getCityById(3).getEmployees());
-        cityDAO.createCity(new City(6,"Munich"));
+        cityDAO.createCity(new City(7,"Munich"));
     }
 }
 
