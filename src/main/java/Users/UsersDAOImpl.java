@@ -18,12 +18,39 @@ public class UsersDAOImpl implements  UsersDAO{
 
     @Override
     public List<Users> getAllUsers() {
-        List<Users> users = (List<Users>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Users").list();
+        List<Users> users = (List<Users>)
+                HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Users").list();
         return users;
     }
 
     @Override
     public Users getUserById(UUID id) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Users.class, id);
+    }
+
+    @Override
+    public Users updateUsers(UUID id, Users users) {
+        Session session = Employee.HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.createQuery("UPDATE Users SET modificationTime =?, userName = ?, userLogin = ?, userPassword = ?, roleAnalyst = ?, roleDesigner =?, roleDeveloper =?, roleQA =?, roleManager =?, roleDefault = ? WHERE id =?");
+        tx1.commit();
+        session.close();
+        return users;
+    }
+
+    @Override
+    public void deleteUser(UUID id) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.delete(id);
+        tx1.commit();
+        session.close();
+    }
+
+    @Override
+    public List<Users> getAllByRoleManager() {
+        List<Users> users = (List<Users>)
+                HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Users WHERE roleManager").list();
+        return users;
     }
 }

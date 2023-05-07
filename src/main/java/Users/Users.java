@@ -51,14 +51,22 @@ public class Users {
     public Users () {
     }
 
-    public Users(String userName, String userLogin, String userPassword) {
+    public Users(String userName, String userLogin, String userPassword, boolean roleDeveloper, boolean roleManager, boolean roleAnalyst, boolean roleQA, boolean roleDesigner, boolean roleDefault) {
         this.id = UUID.randomUUID();
         this.userName = userName;
         this.userLogin = userLogin;
         this.userPassword = userPassword;
         this.creationTime= LocalDateTime.now();
         this.modificationTime = LocalDateTime.now();
+        this.roleDesigner = roleDesigner;
+        this.roleQA = roleQA;
+        this.roleDeveloper = roleDeveloper;
+        this.roleDefault = roleDefault;
+        this.roleAnalyst = roleAnalyst;
+        this.roleManager = roleManager;
     }
+
+
 
     @Override
     public String toString() {

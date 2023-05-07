@@ -1,5 +1,7 @@
 package Users;
 
+import Employee.Employee;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -10,4 +12,10 @@ public interface UsersDAO {
     List<Users> getAllUsers();
 
     Users getUserById(UUID id);
+
+    public Users updateUsers(UUID id, Users users);
+
+    void deleteUser(UUID id);
+
+    public List<Users> getAllByRoleManager();
 }
