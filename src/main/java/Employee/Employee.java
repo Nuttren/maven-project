@@ -1,21 +1,16 @@
 package Employee;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.*;
+
 
 @Entity
-@Table(name = "employee", schema = "public", catalog = "skypro")
+@Table(name = "employee")
 public class Employee {
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age=" + age +
-                ", cityId=" + cityId +
-                '}';
-    }
+
 
     public Employee(long id, String firstName, String lastName, String gender, Integer age, Integer cityId) {
         this.id = id;
@@ -26,7 +21,7 @@ public class Employee {
         this.cityId = cityId;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private long id;
@@ -43,12 +38,25 @@ public class Employee {
     @Column(name = "age")
     private Integer age;
     @Basic
-    @Column(name = "city_id")
+    @Column(name = "city_id", insertable=false, updatable=false)
     private Integer cityId;
+
+    @ManyToOne
+    @JoinColumn (name = "city_id", insertable=false, updatable=false)
+    private City city;
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
 
     public Employee() {
 
     }
+
 
     public long getId() {
         return id;
@@ -124,5 +132,17 @@ public class Employee {
         result = 31 * result + (age != null ? age.hashCode() : 0);
         result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", cityId=" + cityId +
+                '}';
     }
 }
