@@ -1,9 +1,18 @@
 package Users;
 
+import Employee.City;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
+import javax.sound.midi.Sequence;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -11,15 +20,32 @@ import java.util.UUID;
 
 public class Users {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "user_id")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    @Column (name = "date_time_of_creation")
-    private LocalDateTime creationTime;
+    @CreationTimestamp
+    @Column (name = "date_time_of_creation", updatable = false)
+    private Instant creationTime;
 
+    @UpdateTimestamp
     @Column (name = "date_and_time_of_modification")
-    private LocalDateTime modificationTime;
+    private Instant modificationTime;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name="users_roles",
+            joinColumns = @JoinColumn (name = "user_id"),
+            inverseJoinColumns = @JoinColumn (name = "role_id")
+ )
+    private Set<Roles> roles = new HashSet<>();
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
 
     @Column (name = "user_name")
     private String userName;
@@ -30,40 +56,16 @@ public class Users {
     @Column (name= "user_password")
     private String userPassword;
 
-    @Column (name = "role_analyst")
-    private boolean roleAnalyst;
-
-    @Column (name = "role_designer")
-    private boolean roleDesigner;
-
-    @Column (name = "role_developer")
-    private boolean roleDeveloper;
-
-    @Column (name = "role_qa")
-    private boolean roleQA;
-
-    @Column (name = "role_manager")
-    private boolean roleManager;
-
-    @Column (name = "role_default")
-    private boolean roleDefault;
 
     public Users () {
     }
 
-    public Users(String userName, String userLogin, String userPassword, boolean roleDeveloper, boolean roleManager, boolean roleAnalyst, boolean roleQA, boolean roleDesigner, boolean roleDefault) {
-        this.id = UUID.randomUUID();
+    public Users(String userName, String userLogin, String userPassword) {
         this.userName = userName;
         this.userLogin = userLogin;
         this.userPassword = userPassword;
-        this.creationTime= LocalDateTime.now();
-        this.modificationTime = LocalDateTime.now();
-        this.roleDesigner = roleDesigner;
-        this.roleQA = roleQA;
-        this.roleDeveloper = roleDeveloper;
-        this.roleDefault = roleDefault;
-        this.roleAnalyst = roleAnalyst;
-        this.roleManager = roleManager;
+        this.creationTime= Instant.now();
+        this.modificationTime = Instant.now();
     }
 
 
@@ -77,36 +79,30 @@ public class Users {
                 ", userName='" + userName + '\'' +
                 ", userLogin='" + userLogin + '\'' +
                 ", userPassword='" + userPassword + '\'' +
-                ", roleAnalyst=" + roleAnalyst +
-                ", roleDesigner=" + roleDesigner +
-                ", roleDeveloper=" + roleDeveloper +
-                ", roleQA=" + roleQA +
-                ", roleManager=" + roleManager +
-                ", roleDefault=" + roleDefault +
                 '}';
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public LocalDateTime getCreationTime() {
+    public Instant getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(LocalDateTime creationTime) {
+    public void setCreationTime(Instant creationTime) {
         this.creationTime = creationTime;
     }
 
-    public LocalDateTime getModificationTime() {
+    public Instant getModificationTime() {
         return modificationTime;
     }
 
-    public void setModificationTime(LocalDateTime modificationTime) {
+    public void setModificationTime(Instant modificationTime) {
         this.modificationTime = modificationTime;
     }
 
@@ -134,51 +130,4 @@ public class Users {
         this.userPassword = userPassword;
     }
 
-    public boolean isRoleAnalyst() {
-        return roleAnalyst;
-    }
-
-    public void setRoleAnalyst(boolean roleAnalyst) {
-        this.roleAnalyst = roleAnalyst;
-    }
-
-    public boolean isRoleDesigner() {
-        return roleDesigner;
-    }
-
-    public void setRoleDesigner(boolean roleDesigner) {
-        this.roleDesigner = roleDesigner;
-    }
-
-    public boolean isRoleDeveloper() {
-        return roleDeveloper;
-    }
-
-    public void setRoleDeveloper(boolean roleDeveloper) {
-        this.roleDeveloper = roleDeveloper;
-    }
-
-    public boolean isRoleQA() {
-        return roleQA;
-    }
-
-    public void setRoleQA(boolean roleQA) {
-        this.roleQA = roleQA;
-    }
-
-    public boolean isRoleManager() {
-        return roleManager;
-    }
-
-    public void setRoleManager(boolean roleManager) {
-        this.roleManager = roleManager;
-    }
-
-    public boolean isRoleDefault() {
-        return roleDefault;
-    }
-
-    public void setRoleDefault(boolean roleDefault) {
-        this.roleDefault = roleDefault;
-    }
 }
